@@ -1,0 +1,61 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <!--1.指定spring配置文件的位置(spring容器的位置)-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+  <!--2.配置过滤器（解决）-->
+  <!--过滤器-->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <!-- 设置过滤器中的属性值 -->
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <!-- 启动过滤器 -->
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <!-- 过滤所有请求 -->
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!--3.配置监听器（让web项目一启动，spring容器也启动）-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!--4.配置SpringMVC核心控制器DispatcherServlet-->
+  <servlet>
+    <!--你的核心控制器的名字-->
+    <servlet-name>DispatcherServlet</servlet-name>
+    <!--核心控制器类的全路径-->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--配置DispatcherServlet的初始化参数(DispatcherServlet再哪里创建,地址配置进来)-->
+
+    <init-param>
+      <!--contextConfigLocation这个名字不能改-->
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+    <!--    核心控制器DispatcherServlet对象的创建时间，原来没配置的时候:发送请求时创建；
+            现在我们需要程序加载时就要创建Servlet
+    -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <!--    表示什么样的请求路径会进入核心控制器(所有请求都可以进入)-->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>
